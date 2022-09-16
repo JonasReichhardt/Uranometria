@@ -1,38 +1,38 @@
-import board  # type: ignore (this is a CircuitPython built-in)
+import board
 import digitalio
-from joystick_xl.inputs import Axis, Button
+from joystick_xl.inputs import Button
 from joystick_xl.joystick import Joystick
 
 joystick = Joystick()
-sel_hvli = Button(board.GP9,False)
-sel_homing = Button(board.GP10,False)
-load_tube1 = Button(board.GP11,False)
-load_tube2 = Button(board.GP12,False)
-unload_tube1 = Button(None,False)
-unload_tube2 = Button(None,False)
-fire = Button(board.GP13,False)
 
-unload = digitalio.DigitalInOut(board.GP15)
+select_wpn = [Button(board.GP6,False),Button(board.GP7,False),Button(board.GP8,False),Button(board.GP9,False)]
+
+load_tubes = [Button(board.GP14,False),Button(board.GP15,False),Button(board.GP16,False),Button(board.GP17,False)]
+
+unload_tubes = [Button(None,False),Button(None,False),Button(None,False),Button(None,False)]
+
+fire = [Button(board.GP13,False),Button(board.GP12,False),Button(board.GP11,False),Button(board.GP10,False)]
+
+unload = digitalio.DigitalInOut(board.GP18)
 unload.direction = digitalio.Direction.INPUT
 unload.pull = digitalio.Pull.DOWN
 
-joystick.add_input(sel_hvli,sel_homing,load_tube1,load_tube2,unload_tube1, unload_tube2,fire)
+for wpn in select_wpn:
+    joystick.add_input(wpn)
+for tube in load_tubes:
+    joystick.add_input(tube)
+for tube in unload_tubes:
+    joystick.add_input(tube)
+for fire_btn in fire:
+    joystick.add_input(fire_btn)
 
 while True:
     if unload.value is True:
-        if load_tube1.is_pressed:
-            unload_tube1.source_value = True
-        else:
-            unload_tube1.source_value = False
-        if load_tube2.is_pressed:
-            unload_tube2.source_value = True
-        else:
-            unload_tube2.source_value = False
-        load_tube1.bypass = True
-        load_tube2.bypass = True
+        for i in range(len(load_tubes)):
+            unload_tubes[i].source_value = load_tubes[i].is_pressed
+            load_tubes[i].bypass = True
     else:
-        unload_tube1.source_value = False
-        unload_tube2.source_value = False
-        load_tube1.bypass = False
-        load_tube2.bypass = False
+        for i in range(len(load_tubes)):
+            unload_tubes[i].source_value = False
+            load_tubes[i].bypass = False
     joystick.update()
