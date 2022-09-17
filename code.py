@@ -5,13 +5,13 @@ from joystick_xl.joystick import Joystick
 
 joystick = Joystick()
 
-select_wpn = [Button(board.GP6,False),Button(board.GP7,False),Button(board.GP8,False),Button(board.GP9,False)]
+select_wpn = [Button(board.GP13,False),Button(board.GP10,False),Button(board.GP11,False),Button(board.GP12,False)]
 
-load_tubes = [Button(board.GP14,False),Button(board.GP15,False),Button(board.GP16,False),Button(board.GP17,False)]
+load_tubes = [Button(board.GP9,False),Button(board.GP6,False),Button(board.GP7,False),Button(board.GP8,False)]
 
 unload_tubes = [Button(None,False),Button(None,False),Button(None,False),Button(None,False)]
 
-fire = [Button(board.GP13,False),Button(board.GP12,False),Button(board.GP11,False),Button(board.GP10,False)]
+fire = [Button(board.GP16,False),Button(board.GP17,False),Button(board.GP15,False),Button(board.GP14,False)]
 
 unload = digitalio.DigitalInOut(board.GP18)
 unload.direction = digitalio.Direction.INPUT
