@@ -6,9 +6,11 @@ from joystick_xl.joystick import Joystick
 joystick = Joystick()
 
 warp = [Button(board.GP18,False),Button(board.GP19,False),Button(board.GP20,False),Button(board.GP21,False),Button(board.GP22,False)]
-exit_warp = Button(board.GP16,False)
+exit_warp = Button(board.GP6,False)
 
-dock_button = Button(board.GP17,False)
+dock_button = Button(board.GP8,False)
+jump_button = Button(board.GP7,False)
+
 
 led_pins = [board.GP13,board.GP12,board.GP11, board.GP10, board.GP9]
 leds = []
@@ -20,7 +22,8 @@ for pin in led_pins:
 
 for btn in warp:
     joystick.add_input(btn)
-joystick.add_input(exit_warp,dock_button)
+
+joystick.add_input(exit_warp,dock_button,jump_button)
 
 
 while True:
