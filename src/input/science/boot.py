@@ -3,4 +3,4 @@ from joystick_xl.hid import create_joystick
 
 # This will enable a joystick USB HID device.  All other standard CircuitPython USB HID
 # devices (keyboard, mouse, consumer control) will be disabled.
-usb_hid.enable((create_joystick(axes=4, buttons=2),))
+usb_hid.enable((create_joystick(axes=4, buttons=2, hats=0),))
