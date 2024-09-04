@@ -1,0 +1,16 @@
+{
+  "name": "ura-server",
+  "version": "1.0.0",
+  "description": "REST<-->MQTT backend",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mqtt": "^5.10.0",
+    "node-fetch": "^3.3.2"
+  }
+}

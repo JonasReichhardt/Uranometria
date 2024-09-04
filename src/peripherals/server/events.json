@@ -1,0 +1,12 @@
+[
+    {
+        "name": "rtorCtrlMal",
+        "desc": "Reactor controller malfunction",
+        "severity": 0
+    },
+    {
+        "name": "rtorCoolLeak",
+        "desc": "Reactor coolant leak",
+        "severity": 1
+    }
+]
