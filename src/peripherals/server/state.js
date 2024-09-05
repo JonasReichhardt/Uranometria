@@ -7,11 +7,13 @@
  *  3 | coolant
  *  4 | maxhealth
  */
-export default class Ship{
-    constructor(){
+export default class Ship {
+    constructor() {
         this.reactor = new Array(5)
+        this.coolant = 0
         this.hull = 0
     }
     hull
+    coolant
     reactor
 }

@@ -2,9 +2,7 @@ import mqtt from 'mqtt'
 import EEApi from './api.js'
 import Ship from './state.js'
 import Events from './events.js'
-import fs from 'fs'
 
-const reactor_events = JSON.parse(fs.readFileSync('./events.json'))
 const mqcl = mqtt.connect("mqtt://127.0.0.1:1883")
 
 const topics = ["Reactor"]
@@ -23,13 +21,20 @@ mqcl.on("message", (topic, message) => {
     case "Reactor":
       let data = JSON.parse('' + message);
       if (data.Reactor == "Repair") {
-        EEApi.setReactorHealth(1)
+        for(var i in events){
+          if(events[i].type === "Reactor"){
+            Events[events[i].name](events[i],ship,false)
+            console.log("[main] resolved "+events[i].name)
+          }
+          events = events.filter(e=>e.type!="Reactor")
+        }
       }
   }
 });
 
 async function main() {
-  updateState()
+  EEApi.setReactorHealth(0.2)
+  await updateState()
   setInterval(updateState, 1000)
 }
 
@@ -39,28 +44,23 @@ async function updateState() {
     console.log("[main] could not get update from server")
     return
   }
-
-  ship.hull = nship.hull
-  ship.reactor = nship.reactor
-  events = checkEvents(ship)
+  ship = nship
+  checkEvents(ship)
 }
 
 function checkEvents(ship) {
-  let events = []
-  let event = reactor_events.filter(e => e.severity == 0)[0] //TODO randomize selection
+  /*let event = Events.all[Events.all.length * Math.random() | 0]
   Events[event.name](event)
+  events.push(event)*/
+
   // reactor
-  if (ship.reactor[0] < 0.25) {
-    let event = reactor_events.filter(e => e.severity == 1)[0] //TODO randomize selection
-    Events[event.name](event)
+  if (ship.reactor[0] < 0.25 && events.filter(e=>e.type === "Reactor").length ===0) {
+    //let event = Events.all[Events.all.length * Math.random() | 0]
+    let event = Events.all[1]
     events.push(event)
-  } else if (ship.reactor[0] < 0.5) {
-    let event = reactor_events.filter(e => e.severity == 0)[0] //TODO randomize selection
-    Events[event.name](event)
-    events.push(event)
+    Events[event.name](event,ship,true)
+    console.log("[main] detected "+event.name)
   }
 }
-
-
 
 main()
