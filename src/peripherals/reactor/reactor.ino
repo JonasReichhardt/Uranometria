@@ -2,9 +2,9 @@
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
-#define WLAN_SSID       ""
-#define WLAN_PASS       ""
-#define AIO_SERVER      "192.168.0.92"
+#define WLAN_SSID       "Uranometria"
+#define WLAN_PASS       "123456789"
+#define AIO_SERVER      "192.168.1.2"
 #define AIO_SERVERPORT  1883
 #define PERIPHERAL_NAME "Reactor"
 #define REPAIR_BTN 5
@@ -27,12 +27,7 @@ void MQTT_connect();
 void setup() {
   if (DEBUG) {
     Serial.begin(115200);
-    delay(10);
-
-    Serial.println(F("Adafruit MQTT demo"));
-
-    // Connect to WiFi access point.
-    Serial.println(); Serial.println();
+    delay(100);
     Serial.print("Connecting to ");
     Serial.println(WLAN_SSID);
   }
@@ -41,7 +36,7 @@ void setup() {
 
   WiFi.begin(WLAN_SSID, WLAN_PASS);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(100);
+    delay(250);
   }
   if (DEBUG) {
     Serial.println("WiFi connected");
