@@ -1,0 +1,17 @@
+[
+  {
+    "name": "rtorCtrlMal",
+    "desc": "Reactor controller malfunction",
+    "severity": "MED"
+  },
+  {
+    "name": "rtorSecFuelOut",
+    "desc": "Reactor secondary fuel pump outage",
+    "severity": "LOW"
+  },
+  {
+    "name": "rtorCoolLeak",
+    "desc": "Reactor coolant leak",
+    "severity": "HIGH"
+  }
+]

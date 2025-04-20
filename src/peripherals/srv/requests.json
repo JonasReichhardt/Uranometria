@@ -1,0 +1,3 @@
+{
+  "state": "get.lua?cool=getMaxCoolant()&hull=getHull()&rhealth=getSystemHealth('reactor')&rheat=getSystemHeat('reactor')&rpwr=getSystemPower('reactor')&rcool=getSystemCoolant('reactor')&rmhealth=getSystemHealthMax('reactor')"
+}
