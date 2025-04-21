@@ -1,3 +1,4 @@
 {
+  "ee_http_server": "http://localhost:8080/",
   "state": "get.lua?cool=getMaxCoolant()&hull=getHull()&rhealth=getSystemHealth('reactor')&rheat=getSystemHeat('reactor')&rpwr=getSystemPower('reactor')&rcool=getSystemCoolant('reactor')&rmhealth=getSystemHealthMax('reactor')"
 }

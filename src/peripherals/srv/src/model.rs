@@ -2,18 +2,18 @@ use serde::Deserialize;
 
 #[derive(Debug)]
 pub struct Ship {
-    hull: f32,
-    coolant: f32,
-    reactor: Subsystem,
+    pub hull: f32,
+    pub coolant: f32,
+    pub reactor: Subsystem,
 }
 
 #[derive(Debug)]
 pub struct Subsystem {
-    health: f32,
-    heat: f32,
-    power: f32,
-    coolant: f32,
-    max_health: f32,
+    pub health: f32,
+    pub heat: f32,
+    pub power: f32,
+    pub coolant: f32,
+    pub max_health: f32,
 }
 
 #[derive(Deserialize, Debug)]
