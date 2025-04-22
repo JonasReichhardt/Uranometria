@@ -18,9 +18,9 @@ pub struct Subsystem {
 
 #[derive(Deserialize, Debug)]
 pub struct SubsystemEvent {
-    name: String,
-    desc: String,
-    severity: Severity,
+    pub name: String,
+    pub desc: String,
+    pub severity: Severity,
 }
 
 #[derive(Deserialize, Debug)]

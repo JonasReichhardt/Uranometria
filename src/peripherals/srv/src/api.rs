@@ -25,13 +25,32 @@ impl EEApi {
         temp.push_str(address);
         temp.push_str(&api.state);
         api.state = temp;
-        return api;
+        api
     }
 
     pub async fn get_ship(&self) -> Result<Ship, reqwest::Error> {
         Ok(Ship::from(
             reqwest::get(&self.state).await?.json::<ShipDto>().await?,
         ))
+    }
+
+    pub async fn set_alert_level(&self, level: &str) -> Result<(), ()> {
+        let client = Client::new();
+        if let Ok(res) = client
+            .post(format!("{}exec.lua", &self.ee_http_server))
+            .body(format!(
+                "return getPlayerShip(-1):commandSetAlertLevel('{}')",
+                level
+            ))
+            .send()
+            .await
+        {
+            match res.error_for_status() {
+                Ok(_) => return Ok(()),
+                Err(_) => return Err(()),
+            }
+        }
+        Err(())
     }
 
     pub async fn set_subsystem_health(
@@ -70,12 +89,47 @@ impl EEApi {
             Ok(reps) => {
                 let json = reps.json::<HashMap<String, String>>().await.unwrap();
                 if let Some(val) = json.get(key) {
-                    return Ok(val.parse::<f32>().unwrap());
+                    Ok(val.parse::<f32>().unwrap())
                 } else {
-                    return Err(());
+                    Err(())
                 }
             }
-            Err(_) => return Err(()),
+            Err(_) => Err(()),
+        }
+    }
+
+    pub async fn set_power_factor(&self, subsystem: &str, factor: f32) -> Result<(), ()> {
+        let client = Client::new();
+        if let Ok(res) = client
+            .post(format!("{}exec.lua", &self.ee_http_server))
+            .body(format!(
+                "return getPlayerShip(-1):setSystemPowerFactor('{}',{})",
+                subsystem, factor
+            ))
+            .send()
+            .await
+        {
+            match res.error_for_status() {
+                Ok(_) => return Ok(()),
+                Err(_) => return Err(()),
+            }
+        }
+        Err(())
+    }
+
+    pub async fn get_power_factor(&self, subsystem: &str) -> Result<f32, ()> {
+        let key = "pwr";
+        match reqwest::get(format!(
+            "{}get.lua?{}=getSystemPowerFactor('{}')",
+            self.ee_http_server, key, subsystem
+        ))
+        .await
+        {
+            Ok(reps) => {
+                let json = reps.json::<HashMap<String, f32>>().await.unwrap();
+                Ok(json.get(key).unwrap().to_owned())
+            }
+            Err(_) => Err(()),
         }
     }
 
@@ -85,7 +139,7 @@ impl EEApi {
             .post(format!("{}exec.lua", &self.ee_http_server))
             .body(format!(
                 "return getPlayerShip(-1):setMaxCoolant({})",
-                coolant.to_string()
+                coolant
             ))
             .send()
             .await
