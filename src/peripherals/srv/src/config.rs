@@ -14,6 +14,8 @@ pub fn load_events(module_name: &str) -> Vec<SubsystemEvent> {
 }
 
 pub fn load_active_event() -> Option<usize> {
-    let fcont = fs::read_to_string("./persistence").expect("[CONFIG] could not read file");
-    fcont.trim().parse::<usize>().ok()
+    match fs::read_to_string("./persistence") {
+        Ok(fcont) => fcont.trim().parse::<usize>().ok(),
+        _ => None,
+    }
 }
